@@ -101,3 +101,72 @@ Example:
 ```
 
 Here, onchange handles individual field validation, while onclick ensures the overall form is valid before submission.
+
+## react me 
+both use onclick and onchnge
+
+```react.js
+
+import React, { useState } from 'react';
+
+function MyForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const handleChangeName = (e) => {
+    const value = e.target.value;
+    setName(value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      name: value === '' ? 'Name is required!' : '',
+    }));
+  };
+
+  const handleChangeEmail = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      email: value.includes('@') ? '' : 'Please enter a valid email!',
+    }));
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (!name || !email) {
+      setErrors({
+        name: name === '' ? 'Name is required!' : '',
+        email: email === '' ? 'Email is required!' : '',
+      });
+    } else {
+      alert('Form submitted successfully!');
+      // Proceed with form submission
+    }
+  };
+
+  return (
+    <form>
+      <input
+        type="text"
+        value={name}
+        onChange={handleChangeName}
+        placeholder="Enter your name"
+      />
+      {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
+
+      <input
+        type="email"
+        value={email}
+        onChange={handleChangeEmail}
+        placeholder="Enter your email"
+      />
+      {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+
+      <button type="submit" onClick={handleClick}>Submit</button>
+    </form>
+  );
+}
+
+export default MyForm;
+```
